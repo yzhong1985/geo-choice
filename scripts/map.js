@@ -14,7 +14,7 @@ require([
         maxZoom: 17
     });
 
-    var symbol = new PictureMarkerSymbol('img/starbucks-icon.png', 20, 20);
+    var symbol = new PictureMarkerSymbol('img/starbucks-icon.png', 22, 22);
     var featureLayer = new FeatureLayer("https://services.arcgis.com/q3Zg9ERurv23iysr/arcgis/rest/services/Starbucks_Location/FeatureServer/0");
 
     var renderer = new SimpleRenderer(symbol);
