@@ -3,6 +3,7 @@ html, body {
     margin: 0;
     height: 100%;
     width: 100%;
+    font-family: "Lucida Grande","Segoe UI",Arial,sans-serif;
 }
 
 #viewDiv{
@@ -11,3 +12,175 @@ html, body {
     height: 93%;
     width: 100%;
 }
+
+.filter-container{
+    padding-top: 10px;
+    background-color: #dddddd;
+    border-bottom:1px solid #000000;
+}
+
+
+select{
+    margin: 5px 0;
+    font-size: 15px;
+}
+
+#map{
+    float: right;
+    width: 80%;
+    height: 98%;
+    margin: 0;
+    padding: 0;
+}
+
+#leftMenu{
+    float: left;
+    height: 100%;
+    width: 15%;
+    display: block;
+    min-width: 200px;
+    padding:18px;
+}
+
+#menuControl{
+    margin-top: 20px;
+}
+
+#HomeButton {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 50;
+}
+
+#info {
+    position: absolute;
+    right: 0;
+    bottom: 18px;
+    padding: 10px;
+    background-color: #ddd;
+    font: 14px Segoe UI;
+    width: 145px;
+    text-align: center;
+    border-radius: 10px 0 0 0;
+    border: solid 1px #aaa;
+}
+
+
+#advanceContainer{
+    width: 90%;
+    margin:10px auto 0;
+    padding: 10px;
+    border: solid 1px #aaaaaa;
+}
+
+.restitle{
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+}
+.resimg{
+    width: 90px;
+    height: 90px;
+    margin: 5px auto;
+    border-radius: 5px;
+}
+
+.blocktitle{
+    font-weight: 600;
+}
+
+.raceLayer{
+    display: none;
+}
+
+.boldText{
+    font-weight: 600;
+}
+
+.titleLogo{
+    height: 35px;
+}
+
+.infobox-img{
+    float: right;
+    width: 120px;
+    height: 120px;
+    margin: 5px 10px 0 0;
+    border-radius: 5px;
+}
+
+.infobox-title{
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none!important;
+}
+
+.infobox-table{
+    float: left;
+    width: 250px;
+    display: block;
+}
+
+.infobox-table span{
+    font-size: 14px;
+    display: block;
+    width: 245px;
+    word-wrap: break-word;
+}
+
+.infobox2-table{
+    clear: both;
+    width: 100%;
+    font-size: 14px;
+}
+
+.infobox2-table .infotitle{
+    width: 250px;
+}
+
+.infobox2-table .toptitle{
+    font-weight: 600;
+}
+
+.infobox-tags{
+    color:#00008b;
+}
+
+.infobox-stars{
+    background: url('../img/stars.png') no-repeat;
+    width: 102px;
+    height: 18px;
+}
+
+.rating-regular-0{
+    background-position: 0 -240px;
+}
+.rating-regular-1{
+    background-position: 0 -258px;
+}
+.rating-regular-1-half{
+    background-position: 0 -276px;
+}
+.rating-regular-2{
+    background-position: 0 -294px;
+}
+.rating-regular-2-half{
+    background-position: 0 -312px;
+}
+.rating-regular-3{
+    background-position: 0 -330px;
+}
+.rating-regular-3-half{
+    background-position: 0 -348px;
+}
+.rating-regular-4{
+    background-position: 0 -366px;
+}
+.rating-regular-4-half{
+    background-position: 0 -384px;
+}
+.rating-regular-5{
+    background-position: 0 -402px;
+}
+

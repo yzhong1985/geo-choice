@@ -41,10 +41,16 @@
 <div class="container">
 
     <div class="jumbotron">
-        <div class="col-sm-8 mx-auto">
+        <div class="col-sm-8 mx-auto col-12">
             <h1>My Prediction Algorithm</h1>
-            <p>This example is a quick exercise to illustrate how the navbar and its contents work. Some navbars extend the width of the viewport, others are confined within a <code>.container</code>. For positioning of navbars, checkout the <a href="../navbar-top/">top</a> and <a href="../navbar-top-fixed/">fixed top</a> examples.</p>
-            <p>At the smallest breakpoint, the collapse plugin is used to hide the links and show a menu button to toggle the collapsed content.</p>
+            <p><b>Location Sales Volume</b><sup>1</sup> = <br/>117509 + 346718.375 * Location Size Coding<sup>2</sup> -1282.303 * Distance to Nearest Road<sup>3</sup> + 2.208 * Average Household Income + 69882.254 * Log<small>10</small>(Number of Tweets Surrounding)<sup>4</sup> + 13.526 * Asian Population<sup>5</sup></p>
+            <ul style="list-style: none;">
+                <li><sup>1</sup> The annual sales volume of the given location</li>
+                <li><sup>2</sup> value = 1 if the location size less than 2,499 sqft, value = 2 if greater than 2,499 sqft</li>
+                <li><sup>3</sup> The distance from location to the nearest road in seattle road network in meters</li>
+                <li><sup>4</sup> The average number of tweets annually in the surrounding 100 meter buffer zone of the location</li>
+                <li><sup>5</sup> The number of Asian population in the location's census tract</li>
+            </ul>
             <p>
                 <a class="btn btn-primary" href="#" role="button">Download Sourcecode</a>
             </p>

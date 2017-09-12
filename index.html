@@ -40,6 +40,59 @@
     </div>
 </nav>
 
+<div class="container-fluid filter-container"><div class="row">
+ <div class="form-group col-2">
+     <label class="text-bold control-label" for="searchRadius100"><span>Sales Volume</span></label>
+        <select class="form-control" name="searchRadius" data-qaid="selectFilter-searchRadius" id="searchRadius100">
+            <option value="5" data-reactid="152">Greater than $2,000,000 </option>
+            <option value="4" data-reactid="153">$1,200,000 - $2,000,000</option>
+            <option value="3" data-reactid="154">$700,000 - $1,200,000</option>
+            <option value="2" data-reactid="154">$200,000 - $700,000</option>
+            <option value="1" data-reactid="154">Less than $200,000</option>
+        </select></div>
+
+ <div class="form-group col-2">
+     <label class="text-bold control-label" for="startYear1981"><span>Location Size</span></label>
+     <select class="form-control" name="startYear" data-qaid="selectFilter-startYear" id="startYear1981">
+         <option value="1981" data-reactid="170">Greater than 2,499 sqft</option>
+         <option value="1982" data-reactid="171">0 - 2,499 sqft</option>
+     </select></div>
+
+  <div class="form-group col-2">
+      <label class="text-bold control-label " for="endYear2018"><span data-reactid="212">Distance To Road</span></label>
+      <select class="form-control" name="endYear" data-qaid="selectFilter-endYear" id="endYear2018">
+          <option value="1">0 - 80 meters</option>
+          <option value="2">80 - 150 meters</option>
+          <option value="3">150 - 250 meters</option>
+          <option value="4">Greater than 250 meters</option>
+      </select></div>
+
+    <div class="form-group col-2">
+        <label class="text-bold control-label " for="minPrice"><span data-reactid="259">Minimum Price</span></label>
+        <select class="form-control" name="minPrice" data-qaid="selectFilter-minPrice" id="minPrice" data-reactid="262">
+            <option selected="" value="" data-reactid="263">Any Price</option>
+            <option value="1000" data-reactid="264">$1,000</option>
+            <option value="100000" data-reactid="302">$100,000</option>
+        </select></div>
+
+    <div class="form-group col-2">
+        <label class="text-bold control-label " for="maxPrice"><span>Avg. Household Income</span></label>
+        <select class="form-control" name="maxPrice" data-qaid="selectFilter-maxPrice" id="maxPrice">
+            <option selected="" value="">Any Price</option>
+            <option value="1000" data-reactid="312">$1,000</option>
+            <option value="100000" data-reactid="350">$100,000</option>
+        </select></div>
+
+    <div class="form-group col-2" data-reactid="353">
+        <label class="text-bold control-label " for="maxMileage" ><span data-reactid="355">Asian Population</span></label>
+        <select class="form-control" name="maxMileage" data-qaid="selectFilter-maxMileage" id="maxMileage" data-reactid="358">
+            <option value="0" data-reactid="359">Any Mileage</option>
+            <option value="15000" data-reactid="360">Under 15,000</option>
+        </select></div>
+
+</div>
+</div>
+
 <div id="viewDiv"></div>
 
 </body>
