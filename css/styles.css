@@ -19,6 +19,10 @@ html, body {
     border-bottom:1px solid #000000;
 }
 
+.tool-bar{
+
+}
+
 
 select{
     margin: 5px 0;
@@ -48,8 +52,8 @@ select{
 
 #HomeButton {
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 15px;
+    right: 150px;
     z-index: 50;
 }
 
@@ -153,34 +157,52 @@ select{
     height: 18px;
 }
 
-.rating-regular-0{
-    background-position: 0 -240px;
+
+
+/*Override diji menu*/
+.dijitMenuTable{
+    border: 1px solid #6c757d;
 }
-.rating-regular-1{
-    background-position: 0 -258px;
+
+.dijitMenuTable td{
+    padding: 5px;
+    font-size: small;
 }
-.rating-regular-1-half{
-    background-position: 0 -276px;
+.dijitMenuTable tr:hover {
+    background-color: #f1f1f1;
+    color: #000;
 }
-.rating-regular-2{
-    background-position: 0 -294px;
+
+.dijitMenuItemSelected, .dijitMenuItemFocused{
+    background-color: #fff;
+    color: #000;
 }
-.rating-regular-2-half{
-    background-position: 0 -312px;
+
+.predict-menu{
+    background-repeat: no-repeat;
+    width: 20px;
+    height: 20px;
+    text-align: center;
 }
-.rating-regular-3{
-    background-position: 0 -330px;
+
+.predict-newicon {
+    background-image: url('../img/star-menuicon.png');
 }
-.rating-regular-3-half{
-    background-position: 0 -348px;
+
+.predict-demoicon {
+    background-image: url('../img/demg-menuicon.png');
 }
-.rating-regular-4{
-    background-position: 0 -366px;
+
+.predict-predicticon {
+    background-image: url('../img/predict-menuicon.png');
 }
-.rating-regular-4-half{
-    background-position: 0 -384px;
+
+.predict-removeicon {
+    background-image: url('../img/remove-menuicon.png');
 }
-.rating-regular-5{
-    background-position: 0 -402px;
+
+.predict-moveicon{
+    background-image: url('../img/move-menuicon.png');
 }
+
 

@@ -3,15 +3,16 @@
 <head>
     <title>Starbucks Business Smart</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="stylesheet" href="https://js.arcgis.com/3.20/esri/css/esri.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/3.21/esri/css/esri.css">
+    <link rel="stylesheet" href= "https://js.arcgis.com/3.21/dijit/themes/claro/claro.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/styles.css">
 
     <script src="scripts/jquery-3.2.1.slim.min.js"></script>
     <script src="scripts/popper.min.js"></script>
     <script src="scripts/bootstrap.min.js"></script>
-    <script src="https://js.arcgis.com/3.20/"></script>
-    <script src="scripts/map.js"></script>
+    <script src="https://js.arcgis.com/3.21/"></script>
+    <script src="scripts/predict.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -41,6 +42,46 @@
 </nav>
 
 <div id="viewDiv"></div>
+
+
+    <div id="predict-box" class="modal fade">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Predict Annual Sales</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class='table table-striped'>
+                        <tr><td colspan='2' class='text-center'><img alt='starbucks' src='img/starbucks-256-long.png' style='width: 240px;' /></td></tr>
+                        <tr><td colspan='2' class='text-center boldText'><span id="model-lat">Latitude:</span>, <span id="model-lon">Longitude</span></td></tr>
+                        <tr><td>Location Sqt:</td><td>
+                            <select class="form-control small" name="startYear" data-qaid="selectFilter-startYear" id="loc-select">
+                                <option value="1">0 - 2,499 sqft (code:1)</option>
+                                <option value="2">&gt; 2,499 sqft (code:2)</option>
+                            </select>
+                        </td></tr>
+                        <tr><td>Distance to Road:</td><td><span>??&nbsp;meters to nearest road</span></td></tr>
+                        <tr><td># of Tweets:</td><td><span>??&nbsp;tweets in 100 meter buffer</span></td></tr>
+                        <tr><td>Asian Population:</td><td><span>??&nbsp;asian in the census tract</span></td></tr>
+                        <tr><td>Avg. Household Income:</td><td><span>$&nbsp;??&nbsp;within the census tract</span></td></tr>
+                        <tr><td colspan='2' class='text-center'><span class="small boldText">Based on the prediction algorithm, the sales volume =</span></td></tr>
+                        <tr><td colspan='2' class='text-center'><span class="small boldText">
+                            117509 + 346718.375 * Location Size Coding -1282.303 * Distance to Nearest Road + 2.208 * Average Household Income + 69882.254 * Log<small>10</small>(Number of Tweets Surrounding) + 13.526 * Asian Population
+                        </span></td></tr>
+                        <tr><td colspan='2' class='text-center boldText'><span class="h3">$ ??????</span></td></tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="cal-location">Calculate</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 </body>
 </html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Starbucks Business Smart</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="https://js.arcgis.com/3.20/esri/css/esri.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+
+    <script src="scripts/jquery-3.2.1.slim.min.js"></script>
+    <script src="scripts/popper.min.js"></script>
+    <script src="scripts/bootstrap.min.js"></script>
+    <script src="https://js.arcgis.com/3.21/"></script>
+    <script src="scripts/map.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">
+        <img src="img/starbucks-256.png" width="30" height="30" class="d-inline-block align-top" alt="">
+        Starbucks Business Smart </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="algorithm.html">Algorithm</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="prediction.html">Prediction</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="about.html">About</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div id="accordion" role="tablist" aria-multiselectable="true" class="tool-bar">
+    <div class="card">
+        <div class="card-header" role="tab" id="headingOne">
+            <a class="card-link" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Filters</a>
+            <a class="card-link" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseOne">Layers</a>
+            <a class="card-link" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseOne">Setup</a>
+        </div>
+
+        <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+            <div class="container-fluid filter-container">
+                <div class="row">
+                    <div class="form-group col-2">
+                        <label class="text-bold control-label" for="searchRadius100"><span>Sales Volume</span></label>
+                        <select class="form-control" name="searchRadius" data-qaid="selectFilter-searchRadius" id="searchRadius100">
+                            <option value="5" data-reactid="152">Greater than $2,000,000 </option>
+                            <option value="4" data-reactid="153">$1,200,000 - $2,000,000</option>
+                            <option value="3" data-reactid="154">$700,000 - $1,200,000</option>
+                            <option value="2" data-reactid="154">$200,000 - $700,000</option>
+                            <option value="1" data-reactid="154">Less than $200,000</option>
+                        </select></div>
+
+                    <div class="form-group col-2">
+                        <label class="text-bold control-label" for="startYear1981"><span>Location Size</span></label>
+                        <select class="form-control" name="startYear" data-qaid="selectFilter-startYear" id="startYear1981">
+                            <option value="1981" data-reactid="170">Greater than 2,499 sqft</option>
+                            <option value="1982" data-reactid="171">0 - 2,499 sqft</option>
+                        </select></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+            <div class="container-fluid filter-container">
+                <div class="row">
+                    <div class="form-group col-2">
+                        <label class="text-bold control-label" for="searchRadius1001"><span>Sales Volume</span></label>
+                        <select class="form-control" name="searchRadius" data-qaid="selectFilter-searchRadius" id="searchRadius1001">
+                            <option value="5" data-reactid="152">Greater than $2,000,000 </option>
+                            <option value="4" data-reactid="153">$1,200,000 - $2,000,000</option>
+                            <option value="3" data-reactid="154">$700,000 - $1,200,000</option>
+                            <option value="2" data-reactid="154">$200,000 - $700,000</option>
+                            <option value="1" data-reactid="154">Less than $200,000</option>
+                        </select></div>
+
+                    <div class="form-group col-2">
+                        <label class="text-bold control-label" for="startYear1981"><span>Location Size</span></label>
+                        <select class="form-control" name="startYear" data-qaid="selectFilter-startYear" id="startYear1981">
+                            <option value="1981" data-reactid="170">Greater than 2,499 sqft</option>
+                            <option value="1982" data-reactid="171">0 - 2,499 sqft</option>
+                        </select></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="viewDiv">
+    <div id="HomeButton"></div>
+</div>
+
+</body>
+</html>
