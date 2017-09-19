@@ -4,6 +4,11 @@
 var map, editToolbar, ctxMenuForGraphics, ctxMenuForMap;
 var selected, currentLocation;
 
+var predictFactorReady = 0;
+
+//for debug
+var tempvar1, tempvar2, tempvar3;
+
 require([
     "esri/map","esri/tasks/Geoprocessor", "esri/geometry/Point", "esri/geometry/Polygon",
     "esri/toolbars/draw", "esri/toolbars/edit",
@@ -33,8 +38,8 @@ require([
     });
 
     var gp_dg = new Geoprocessor("https://localhost:6443/arcgis/rest/services/starbucks/FindDemographicUnder/GPServer/FindDemographicUnder");
-    var gp_road = new Geoprocessor("https://localhost:6443/arcgis/rest/services/starbucks/FindDemographicUnder/GPServer/FindNearRoad");
-    var gp_tweets = new Geoprocessor("https://localhost:6443/arcgis/rest/services/starbucks/FindDemographicUnder/GPServer/FindNearRoad");
+    var gp_road = new Geoprocessor("https://localhost:6443/arcgis/rest/services/starbucks/FindNearRoad/GPServer/FindNearRoad");
+    var gp_tweets = new Geoprocessor("https://localhost:6443/arcgis/rest/services/starbucks/FindNearTweets/GPServer/FindNearTweets");
 
     map.on("load", createToolbarAndContextMenu);
 
@@ -187,13 +192,17 @@ require([
                         "NEAR_DIST": 4.10880605353E-4
                     },
                     "geometry": {
-                        "x": -122.65917402046466,
-                        "y": 47.75782560456804
+                        "x": lon,
+                        "y": lat,
                     }
                 }],
                 "exceededTransferLimit": false
             };
             $("#cal-location").click(function () {
+
+                $(".predict-factor").hide();
+                $(".predict-loading").show();
+
                 gp_dg.submitJob({
                     "user_point": params,
                 }, completeDgdataRequest, checkDgStatus);
@@ -203,53 +212,92 @@ require([
                 gp_tweets.submitJob({
                     "user_point": params,
                 }, completeTweetsRequest, checkTweetsStatus);
+
             });
 
             $('#predict-box').modal();
     }
 
     function completeDgdataRequest(jobInfo){
-        console.log("getting data");
+        //console.log("getting data");
         gp_dg.getResultData(jobInfo.jobId, "demographic_result_shp", displayDgResult);
     }
 
     function displayDgResult(result, messages) {
         console.log(result);
+        $('#loading-asiapop').hide();
+        $('#loading-avghh').hide();
+        $('#asiapop-text').show();
+        $('#avghh-text').show();
+
+        // var asiapopu = result.value.features[0].attributes["AsianPopNu"];
+        // var avghhold = result.value.features[0].attributes["AvgHouseHo"];
+        //
+        // //display numbers
+        // $('#asiapop-text').text(asiapopu + " asian in the census tract");
+        // $('#avghh-text').text("$"+ avghhold + " within the census tract");
+
+        predictFactorReady+=1;
+        if(predictFactorReady == 3){
+            displayFinalPredict();
+        }
+
+        tempvar1 = result;
     }
 
     function checkDgStatus(jobInfo) {
-        console.log(jobInfo);
+       // console.log(jobInfo);
     }
 
     /* 2. Handling getting nearest road */
 
     function completeRoadDistRequest(jobInfo){
-        console.log("getting data");
-        gp_road.getResultData(jobInfo.jobId, "???", displayRoadDistResult);
+
+        gp_road.getResultData(jobInfo.jobId, "PointDist", displayRoadDistResult);
     }
 
     function displayRoadDistResult(result, messages) {
         console.log(result);
+        $('#loading-distroad').hide();
+        $('#distroad-text').show();
+        predictFactorReady+=1;
+        if(predictFactorReady == 3){
+            displayFinalPredict();
+        }
+        tempvar2 = result;
     }
 
     function checkRoadDistStatus(jobInfo){
-        console.log(jobInfo);
+        //console.log(jobInfo);
     }
 
     /* 3. Find tweets */
     function completeTweetsRequest(jobInfo){
-        console.log("getting tweets data");
-        gp_tweets.getResultData(jobInfo.jobId, "???", displayTweetsResult);
+        gp_tweets.getResultData(jobInfo.jobId, "user_point_SpatialJoin_shp", displayTweetsResult);
     }
 
     function displayTweetsResult(result, messages) {
         console.log(result);
+        $('#loading-numtweets').hide();
+        $('#numtweets-text').show();
+        predictFactorReady+=1;
+        if(predictFactorReady == 3){
+            displayFinalPredict();
+        }
+        tempvar3 = result;
     }
 
     function checkTweetsStatus(jobInfo){
-        console.log(jobInfo);
+        //console.log(jobInfo);
     }
 
+    //display final algorithm prediction
+    function displayFinalPredict() {
+        $('#loading-salevol').hide();
+        $('#pred-salesvol').show();
+    }
+    
+    
     // Helper Methods
     function getMapPointFromMenuPosition(box) {
         var x = box.x, y = box.y;

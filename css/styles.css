@@ -205,4 +205,9 @@ select{
     background-image: url('../img/move-menuicon.png');
 }
 
+.predict-loading{
+    width: 30px;
+    height: 30px;
+    display: none;
+}
 

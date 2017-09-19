@@ -2,27 +2,25 @@
 <html>
 <head>
     <title>Starbucks Business Smart</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="stylesheet" href="https://js.arcgis.com/3.21/esri/css/esri.css">
-    <link rel="stylesheet" href= "https://js.arcgis.com/3.21/dijit/themes/claro/claro.css">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/styles.css">
-
-    <script src="scripts/jquery-3.2.1.slim.min.js"></script>
-    <script src="scripts/popper.min.js"></script>
-    <script src="scripts/bootstrap.min.js"></script>
-    <script src="https://js.arcgis.com/3.21/"></script>
-    <script src="scripts/predict.js"></script>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+    <link href="https://js.arcgis.com/3.21/esri/css/esri.css" rel="stylesheet">
+    <link href="https://js.arcgis.com/3.21/dijit/themes/claro/claro.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+    <script src="scripts/jquery-3.2.1.slim.min.js">
+    </script>
+    <script src="scripts/popper.min.js">
+    </script>
+    <script src="scripts/bootstrap.min.js">
+    </script>
+    <script src="https://js.arcgis.com/3.21/">
+    </script>
+    <script src="scripts/predict.js">
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">
-        <img src="img/starbucks-256.png" width="30" height="30" class="d-inline-block align-top" alt="">
-        Starbucks Business Smart </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
+    <a class="navbar-brand" href="#"><img alt="" class="d-inline-block align-top" height="30" src="img/starbucks-256.png" width="30"> Starbucks Business Smart</a> <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbarSupportedContent" data-toggle="collapse" type="button"><span class="navbar-toggler-icon"></span></button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
@@ -32,7 +30,7 @@
                 <a class="nav-link" href="algorithm.html">Algorithm</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="prediction.html">Prediction  <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="prediction.html">Prediction <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="about.html">About</a>
@@ -40,48 +38,64 @@
         </ul>
     </div>
 </nav>
-
 <div id="viewDiv"></div>
-
-
-    <div id="predict-box" class="modal fade">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Predict Annual Sales</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <table class='table table-striped'>
-                        <tr><td colspan='2' class='text-center'><img alt='starbucks' src='img/starbucks-256-long.png' style='width: 240px;' /></td></tr>
-                        <tr><td colspan='2' class='text-center boldText'><span id="model-lat">Latitude:</span>, <span id="model-lon">Longitude</span></td></tr>
-                        <tr><td>Location Sqt:</td><td>
-                            <select class="form-control small" name="startYear" data-qaid="selectFilter-startYear" id="loc-select">
-                                <option value="1">0 - 2,499 sqft (code:1)</option>
-                                <option value="2">&gt; 2,499 sqft (code:2)</option>
-                            </select>
-                        </td></tr>
-                        <tr><td>Distance to Road:</td><td><span>??&nbsp;meters to nearest road</span></td></tr>
-                        <tr><td># of Tweets:</td><td><span>??&nbsp;tweets in 100 meter buffer</span></td></tr>
-                        <tr><td>Asian Population:</td><td><span>??&nbsp;asian in the census tract</span></td></tr>
-                        <tr><td>Avg. Household Income:</td><td><span>$&nbsp;??&nbsp;within the census tract</span></td></tr>
-                        <tr><td colspan='2' class='text-center'><span class="small boldText">Based on the prediction algorithm, the sales volume =</span></td></tr>
-                        <tr><td colspan='2' class='text-center'><span class="small boldText">
-                            117509 + 346718.375 * Location Size Coding -1282.303 * Distance to Nearest Road + 2.208 * Average Household Income + 69882.254 * Log<small>10</small>(Number of Tweets Surrounding) + 13.526 * Asian Population
-                        </span></td></tr>
-                        <tr><td colspan='2' class='text-center boldText'><span class="h3">$ ??????</span></td></tr>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="cal-location">Calculate</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
+<div class="modal fade" id="predict-box">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Predict Annual Sales</h5><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <table class='table table-striped'>
+                    <tr>
+                        <td class='text-center' colspan='2'><img alt='starbucks' src='img/starbucks-256-long.png' style='width: 240px;'></td>
+                    </tr>
+                    <tr>
+                        <td class='text-center boldText' colspan='2'><span id="model-lat">Latitude:</span>, <span id="model-lon">Longitude</span></td>
+                    </tr>
+                    <tr>
+                        <td>Location Sqt:</td>
+                        <td><select class="form-control small" data-qaid="selectFilter-startYear" id="loc-select" name="startYear">
+                            <option value="1">
+                                0 - 2,499 sqft (code:1)
+                            </option>
+                            <option value="2">
+                                &gt; 2,499 sqft (code:2)
+                            </option>
+                        </select></td>
+                    </tr>
+                    <tr>
+                        <td>Distance to Road:</td>
+                        <td><img alt="loading" class="predict-loading" id="loading-distroad" src="img/loading.gif"><span class="predict-factor" id="distroad-text">??&nbsp;meters to nearest road</span></td>
+                    </tr>
+                    <tr>
+                        <td># of Tweets:</td>
+                        <td><img alt="loading" class="predict-loading" id="loading-numtweets" src="img/loading.gif"><span class="predict-factor" id="numtweets-text">??&nbsp;tweets in 100 meter buffer</span></td>
+                    </tr>
+                    <tr>
+                        <td>Asian Population:</td>
+                        <td><img alt="loading" class="predict-loading" id="loading-asiapop" src="img/loading.gif"><span class="predict-factor" id="asiapop-text">??&nbsp;asian in the census tract</span></td>
+                    </tr>
+                    <tr>
+                        <td>Avg. Household Income:</td>
+                        <td><img alt="loading" class="predict-loading" id="loading-avghh" src="img/loading.gif"><span class="predict-factor" id="avghh-text">$&nbsp;??&nbsp;within the census tract</span></td>
+                    </tr>
+                    <tr>
+                        <td class='text-center' colspan='2'><span class="small boldText">Based on the prediction algorithm, the sales volume =</span></td>
+                    </tr>
+                    <tr>
+                        <td class='text-center' colspan='2'><span class="small boldText">117509 + 346718.375 * Location Size Coding -1282.303 * Distance to Nearest Road + 2.208 * Average Household Income + 69882.254 * Log<small>10</small>(Number of Tweets Surrounding) + 13.526 * Asian Population</span></td>
+                    </tr>
+                    <tr>
+                        <td class='text-center boldText h3' colspan='2'><img alt="loading" class="predict-loading" id="loading-salevol" src="img/loading.gif"><span class="predict-factor" id="pred-salesvol">$ ??????</span></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="cal-location" type="button">Calculate</button> <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
             </div>
         </div>
     </div>
-
-
+</div>
 </body>
 </html>
