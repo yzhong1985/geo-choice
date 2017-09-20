@@ -80,13 +80,6 @@ require([
                 map.graphics.add(graphic);
             }
         }));
-        ctxMenuForMap.addChild(new MenuItem({
-            iconClass: "predict-menu predict-demoicon",
-            label: "Demographic Data",
-            onClick: function(e) {
-
-            }
-        }));
         ctxMenuForMap.startup();
         ctxMenuForMap.bindDomNode(map.container);
     }

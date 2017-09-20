@@ -6,12 +6,7 @@
     <link rel="stylesheet" href="https://js.arcgis.com/3.20/esri/css/esri.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/styles.css">
-
-    <script src="scripts/jquery-3.2.1.slim.min.js"></script>
-    <script src="scripts/popper.min.js"></script>
-    <script src="scripts/bootstrap.min.js"></script>
-    <script src="https://js.arcgis.com/3.20/"></script>
-    <script src="scripts/map.js"></script>
+    <link rel="stylesheet" href="css/carousel.css">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -25,75 +20,124 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="index.html">Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="algorithm.html">Algorithm</a>
+                <a class="nav-link" href="current.html">Current Location</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="prediction.html">Prediction</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="about.html">About</a>
+                <a class="nav-link" href="about.html">About <span class="sr-only">(current)</span></a>
             </li>
         </ul>
     </div>
 </nav>
 
-<div class="container-fluid filter-container"><div class="row">
- <div class="form-group col-2">
-     <label class="text-bold control-label" for="searchRadius100"><span>Sales Volume</span></label>
-        <select class="form-control" name="searchRadius" data-qaid="selectFilter-searchRadius" id="searchRadius100">
-            <option value="5" data-reactid="152">Greater than $2,000,000 </option>
-            <option value="4" data-reactid="153">$1,200,000 - $2,000,000</option>
-            <option value="3" data-reactid="154">$700,000 - $1,200,000</option>
-            <option value="2" data-reactid="154">$200,000 - $700,000</option>
-            <option value="1" data-reactid="154">Less than $200,000</option>
-        </select></div>
-
- <div class="form-group col-2">
-     <label class="text-bold control-label" for="startYear1981"><span>Location Size</span></label>
-     <select class="form-control" name="startYear" data-qaid="selectFilter-startYear" id="startYear1981">
-         <option value="1981" data-reactid="170">Greater than 2,499 sqft</option>
-         <option value="1982" data-reactid="171">0 - 2,499 sqft</option>
-     </select></div>
-
-  <div class="form-group col-2">
-      <label class="text-bold control-label " for="endYear2018"><span data-reactid="212">Distance To Road</span></label>
-      <select class="form-control" name="endYear" data-qaid="selectFilter-endYear" id="endYear2018">
-          <option value="1">0 - 80 meters</option>
-          <option value="2">80 - 150 meters</option>
-          <option value="3">150 - 250 meters</option>
-          <option value="4">Greater than 250 meters</option>
-      </select></div>
-
-    <div class="form-group col-2">
-        <label class="text-bold control-label " for="minPrice"><span data-reactid="259">Minimum Price</span></label>
-        <select class="form-control" name="minPrice" data-qaid="selectFilter-minPrice" id="minPrice" data-reactid="262">
-            <option selected="" value="" data-reactid="263">Any Price</option>
-            <option value="1000" data-reactid="264">$1,000</option>
-            <option value="100000" data-reactid="302">$100,000</option>
-        </select></div>
-
-    <div class="form-group col-2">
-        <label class="text-bold control-label " for="maxPrice"><span>Avg. Household Income</span></label>
-        <select class="form-control" name="maxPrice" data-qaid="selectFilter-maxPrice" id="maxPrice">
-            <option selected="" value="">Any Price</option>
-            <option value="1000" data-reactid="312">$1,000</option>
-            <option value="100000" data-reactid="350">$100,000</option>
-        </select></div>
-
-    <div class="form-group col-2">
-        <label class="text-bold control-label " for="maxMileage" ><span data-reactid="355">Asian Population</span></label>
-        <select class="form-control" name="maxMileage" data-qaid="selectFilter-maxMileage" id="maxMileage" data-reactid="358">
-            <option value="0" data-reactid="359">Any Mileage</option>
-            <option value="15000" data-reactid="360">Under 15,000</option>
-        </select></div>
-
-</div>
+<div id="myCarousel" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img class="first-slide" src="img/slide1.jpg" alt="First slide">
+            <div class="container">
+                <div class="carousel-caption d-none d-md-block text-left">
+                    <h1>Example headline.</h1>
+                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+                    <p><a class="btn btn-lg btn-primary" href="#" role="button">Sign up today</a></p>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img class="second-slide" src="img/slide2.jpg" alt="Second slide">
+            <div class="container">
+                <div class="carousel-caption d-none d-md-block">
+                    <h1>Explore Starbucks in Seattle</h1>
+                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+                    <p><a class="btn btn-lg btn-primary" href="#" role="button">Learn more</a></p>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img class="third-slide" src="img/slide3.jpg" alt="Third slide">
+            <div class="container">
+                <div class="carousel-caption d-none d-md-block text-right">
+                    <h1>One more for good measure.</h1>
+                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+                    <p><a class="btn btn-lg btn-primary" href="#" role="button">Browse gallery</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
 </div>
 
-<div id="viewDiv"></div>
 
+<!-- Marketing messaging and featurettes
+================================================== -->
+<!-- Wrap the rest of the page in another container to center all the content. -->
+
+<div class="container marketing">
+
+    <!-- Three columns of text below the carousel -->
+    <div class="row">
+        <div class="col-lg-4">
+            <img class="rounded-circle" src="img/slogo1.png" alt="Generic placeholder image" width="140" height="140">
+            <h2>Task 1: Current Location</h2>
+            <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.</p>
+            <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4">
+            <img class="rounded-circle" src="img/slogo2.png" alt="Generic placeholder image" width="140" height="140">
+            <h2>Task 2: Prediction</h2>
+            <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.</p>
+            <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4">
+            <img class="rounded-circle" src="img/slogo3.png" alt="Generic placeholder image" width="140" height="140">
+            <h2>Survey</h2>
+            <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+            <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+    </div><!-- /.row -->
+
+    <!-- START THE FEATURETTES -->
+
+
+
+    <hr class="featurette-divider">
+
+    <!-- /END THE FEATURETTES -->
+
+
+    <!-- FOOTER -->
+    <footer>
+        <p class="float-right"><a href="#">Back to top</a></p>
+        <p>&copy; 2017 Designed by Yang Zhong</p>
+    </footer>
+
+</div><!-- /.container -->
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+<script src="scripts/jquery-3.2.1.slim.min.js"></script>
+<script src="scripts/popper.min.js"></script>
+<script src="scripts/bootstrap.min.js"></script>
+<script src="scripts/holder.min.js"></script>
+<script src="scripts/ie10-viewport-bug-workaround.js"></script>
 </body>
+
 </html>
