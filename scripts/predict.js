@@ -10,22 +10,13 @@ var thislocation_asiaPop = 0;
 var thislocation_avgIncome = 0;
 var thislocation_tweetsCt = 0;
 
+var thislocation_lon=0;
+var thislocation_lat=0;
+var location_dict = {};
+
 //for debug
 var tempvar1, tempvar2, tempvar3;
 
-var params = {
-    "displayFieldName": "",
-    "geometryType": "esriGeometryPoint",
-    "spatialReference": {"wkid": 4326,"latestWkid": 4326},
-    "fields": [{"name": "FID","type": "esriFieldTypeOID","alias": "FID"},
-        {"name": "Id","type": "esriFieldTypeInteger","alias": "Id"},
-        {"name": "NEAR_FID","type": "esriFieldTypeInteger","alias": "NEAR_FID"},
-        {"name": "NEAR_DIST","type": "esriFieldTypeDouble","alias": "NEAR_DIST"}],
-    "features": [{
-        "attributes": {"FID": 0,"Id": 0,"NEAR_FID": 0,"NEAR_DIST": 0},
-        "geometry": {"x": 0,"y": 0,}}],
-    "exceededTransferLimit": false
-};
 
 require([
     "esri/map","esri/tasks/Geoprocessor", "esri/geometry/Point", "esri/geometry/Polygon",
@@ -84,12 +75,10 @@ require([
             $(".predict-factor").hide();
             $(".predict-loading").show();
 
-            var t_lon = params.features[0].geometry.x;
-            var t_lat = params.features[0].geometry.y;
 
-            var dgurl = buildDGUrl(t_lon, t_lat);
-            var tweetsurl = buildTweetsUrl(t_lon, t_lat);
-            var roadurl = buildNearRDUrl(t_lon, t_lat);
+            var dgurl = buildDGUrl(thislocation_lon, thislocation_lat);
+            var tweetsurl = buildTweetsUrl(thislocation_lon, thislocation_lat);
+            var roadurl = buildNearRDUrl(thislocation_lon, thislocation_lat);
 
             //sending get requests to server..
             //for some reason, the post request dosen't work, so has to use get, which should be fixed in future.
@@ -135,7 +124,7 @@ require([
         ctxMenuForGraphics.addChild(new MenuItem({
             iconClass: "predict-menu predict-predicticon",
             label: "Predict Annual Sales",
-            onClick: clickGetDgData,
+            onClick: clickGetFactsData,
         }));
 
         //move selected location
@@ -151,9 +140,7 @@ require([
         ctxMenuForGraphics.addChild(new MenuItem({
             iconClass: "predict-menu predict-demoicon",
             label: "Demographic",
-            onClick: function() {
-                editToolbar.activate(Edit.MOVE, selected);
-            }
+            onClick: clickGetDgData,
         }));
 
         //remove the selected location
@@ -176,13 +163,14 @@ require([
             // Let's bind to the graphic underneath the mouse cursor
             ctxMenuForGraphics.bindDomNode(evt.graphic.getDojoShape().getNode());
         });
-
         map.graphics.on("mouse-out", function(evt) {
             ctxMenuForGraphics.unBindDomNode(evt.graphic.getDojoShape().getNode());
         });
     }
 
-    function clickGetDgData(e) {
+    function clickGetFactsData(e) {
+
+            resetPredictUI();
 
             var lat = selected.geometry.getLatitude().toFixed(5);
             var lon =selected.geometry.getLongitude().toFixed(5);
@@ -190,10 +178,25 @@ require([
             $('#model-lat').text("Latitude:"+ lat);
             $('#model-lon').text("Longitude:"+ lon);
 
-            params.features[0].geometry.x = lon;
-            params.features[0].geometry.y = lat;
+            thislocation_lon = lon;
+            thislocation_lat = lat;
 
             $('#predict-box').modal();
+
+    }
+
+    function clickGetDgData(e) {
+
+        var lat = selected.geometry.getLatitude().toFixed(5);
+        var lon =selected.geometry.getLongitude().toFixed(5);
+
+        $('#model-lat').text("Latitude:"+ lat);
+        $('#model-lon').text("Longitude:"+ lon);
+
+        thislocation_lon = lon;
+        thislocation_lat = lat;
+
+        $('#demographic-box').modal();
     }
 
     /* 1. Handling getting demographic data */
@@ -261,12 +264,26 @@ require([
             var location_code = $("#loc-select").val();
             var salesvol = predictAlgo(location_code, thislocation_nearRd, thislocation_avgIncome, thislocation_tweetsCt, thislocation_asiaPop);
             $('#pred-salesvol').text('$ '+numberWithCommas(salesvol.toFixed(0)));
+
+            //push the location to a page dict
+            var thislocation = {
+                location_code: location_code,
+                road_dist: thislocation_nearRd,
+                avg_income: thislocation_avgIncome,
+                tweets_ct: thislocation_tweetsCt,
+                asian_pop:thislocation_asiaPop,
+                sales_predict:salesvol
+            };
+            var key = thislocation_lon.toString() + thislocation_lat.toString();
+            if(location_dict[key]==null){
+                location_dict[key] = thislocation;
+            }
+
             cleanGlobeVars();
         }
 
     }
-    
-    
+
     // Helper Methods
     function getMapPointFromMenuPosition(box) {
         var x = box.x, y = box.y;
@@ -312,6 +329,15 @@ require([
         thislocation_asiaPop = 0;
         thislocation_avgIncome = 0;
         thislocation_tweetsCt = 0;
+
+    }
+
+    function resetPredictUI() {
+        $('#asiapop-text').text("?? asian in the census tract");
+        $('#avghh-text').text("$ ?? within the census tract");
+        $('#distroad-text').text("?? meters to nearest road");
+        $('#numtweets-text').text("?? tweets in 100 meter buffer");
+        $('#pred-salesvol').text('$ ??????');
     }
 
 });
