@@ -55,9 +55,9 @@ require([
         maxZoom: 17
     });
 
-    var url_dg = "https://134.173.236.10:6443/arcgis/rest/services/starbucksmart/FindDGUnder/GPServer/FindDemographicUnder/execute";
-    var url_tweets = "https://134.173.236.10:6443/arcgis/rest/services/starbucksmart/FindNearTweets/GPServer/FindNearTweets/execute";
-    var url_nearRoad = "https://134.173.236.10:6443/arcgis/rest/services/starbucksmart/FindNearRoad/GPServer/FindNearRoad/execute"
+    var url_dg = "http://134.173.236.10:6080/arcgis/rest/services/starbucksmart/FindDGUnder/GPServer/FindDemographicUnder/execute";
+    var url_tweets = "http://134.173.236.10:6080/arcgis/rest/services/starbucksmart/FindNearTweets/GPServer/FindNearTweets/execute";
+    var url_nearRoad = "http://134.173.236.10:6080/arcgis/rest/services/starbucksmart/FindNearRoad/GPServer/FindNearRoad/execute"
 
     map.on("load", createToolbarAndContextMenu);
 
