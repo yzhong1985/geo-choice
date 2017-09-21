@@ -17,10 +17,26 @@ html, body {
     width: 100%;
 }
 
+.main-pic-bg{
+    background-color:rgba(255, 255, 255, 0.5);
+    padding: 20px;
+    color: #2e3133;
+}
+
 .filter-container{
     padding-top: 10px;
     background-color: #dddddd;
     border-bottom:1px solid #000000;
+}
+
+.home-task-ul{
+    text-align:left;
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
+.home-task-ol{
+    text-align:left;
 }
 
 .tool-bar{
