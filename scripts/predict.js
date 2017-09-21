@@ -65,7 +65,6 @@ require([
         createGraphicsMenu();
         bindEvents();
 
-
     }
 
     function bindEvents() {
