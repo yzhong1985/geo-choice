@@ -5,9 +5,27 @@ var map, editToolbar, ctxMenuForGraphics, ctxMenuForMap;
 var selected, currentLocation;
 
 var predictFactorReady = 0;
+var thislocation_nearRd = 0;
+var thislocation_asiaPop = 0;
+var thislocation_avgIncome = 0;
+var thislocation_tweetsCt = 0;
 
 //for debug
 var tempvar1, tempvar2, tempvar3;
+
+var params = {
+    "displayFieldName": "",
+    "geometryType": "esriGeometryPoint",
+    "spatialReference": {"wkid": 4326,"latestWkid": 4326},
+    "fields": [{"name": "FID","type": "esriFieldTypeOID","alias": "FID"},
+        {"name": "Id","type": "esriFieldTypeInteger","alias": "Id"},
+        {"name": "NEAR_FID","type": "esriFieldTypeInteger","alias": "NEAR_FID"},
+        {"name": "NEAR_DIST","type": "esriFieldTypeDouble","alias": "NEAR_DIST"}],
+    "features": [{
+        "attributes": {"FID": 0,"Id": 0,"NEAR_FID": 0,"NEAR_DIST": 0},
+        "geometry": {"x": 0,"y": 0,}}],
+    "exceededTransferLimit": false
+};
 
 require([
     "esri/map","esri/tasks/Geoprocessor", "esri/geometry/Point", "esri/geometry/Polygon",
@@ -37,9 +55,9 @@ require([
         maxZoom: 17
     });
 
-    var gp_dg = new Geoprocessor("https://localhost:6443/arcgis/rest/services/starbucks/FindDemographicUnder/GPServer/FindDemographicUnder");
-    var gp_road = new Geoprocessor("https://localhost:6443/arcgis/rest/services/starbucks/FindNearRoad/GPServer/FindNearRoad");
-    var gp_tweets = new Geoprocessor("https://localhost:6443/arcgis/rest/services/starbucks/FindNearTweets/GPServer/FindNearTweets");
+    var url_dg = "https://134.173.236.10:6443/arcgis/rest/services/starbucksmart/FindDGUnder/GPServer/FindDemographicUnder/execute";
+    var url_tweets = "https://134.173.236.10:6443/arcgis/rest/services/starbucksmart/FindNearTweets/GPServer/FindNearTweets/execute";
+    var url_nearRoad = "https://134.173.236.10:6443/arcgis/rest/services/starbucksmart/FindNearRoad/GPServer/FindNearRoad/execute"
 
     map.on("load", createToolbarAndContextMenu);
 
@@ -54,6 +72,31 @@ require([
 
         createMapMenu();
         createGraphicsMenu();
+        bindEvents();
+
+
+    }
+
+    function bindEvents() {
+        //when click calculation, get four factors from geoservices
+        $("#cal-location").click(function () {
+
+            $(".predict-factor").hide();
+            $(".predict-loading").show();
+
+            var t_lon = params.features[0].geometry.x;
+            var t_lat = params.features[0].geometry.y;
+
+            var dgurl = buildDGUrl(t_lon, t_lat);
+            var tweetsurl = buildTweetsUrl(t_lon, t_lat);
+            var roadurl = buildNearRDUrl(t_lon, t_lat);
+
+            //sending get requests to server..
+            //for some reason, the post request dosen't work, so has to use get, which should be fixed in future.
+            $.get( dgurl, null).done(displayDgResult);
+            $.get( tweetsurl, null).done(displayTweetsResult);
+            $.get( roadurl, null).done(displayRoadDistResult);
+        });
     }
 
     function createMapMenu() {
@@ -139,7 +182,6 @@ require([
         });
     }
 
-    /* 1. Handling getting demographic data */
     function clickGetDgData(e) {
 
             var lat = selected.geometry.getLatitude().toFixed(5);
@@ -148,146 +190,80 @@ require([
             $('#model-lat').text("Latitude:"+ lat);
             $('#model-lon').text("Longitude:"+ lon);
 
-            var params = {
-                "displayFieldName": "",
-                "geometryType": "esriGeometryPoint",
-                "spatialReference": {
-                    "wkid": 4326,
-                    "latestWkid": 4326
-                },
-                "fields": [
-                    {
-                        "name": "FID",
-                        "type": "esriFieldTypeOID",
-                        "alias": "FID"
-                    },
-                    {
-                        "name": "Id",
-                        "type": "esriFieldTypeInteger",
-                        "alias": "Id"
-                    },
-                    {
-                        "name": "NEAR_FID",
-                        "type": "esriFieldTypeInteger",
-                        "alias": "NEAR_FID"
-                    },
-                    {
-                        "name": "NEAR_DIST",
-                        "type": "esriFieldTypeDouble",
-                        "alias": "NEAR_DIST"
-                    }
-                ],
-                "features": [{
-                    "attributes": {
-                        "FID": 0,
-                        "Id": 0,
-                        "NEAR_FID": 178743,
-                        "NEAR_DIST": 4.10880605353E-4
-                    },
-                    "geometry": {
-                        "x": lon,
-                        "y": lat,
-                    }
-                }],
-                "exceededTransferLimit": false
-            };
-            $("#cal-location").click(function () {
-
-                $(".predict-factor").hide();
-                $(".predict-loading").show();
-
-                gp_dg.submitJob({
-                    "user_point": params,
-                }, completeDgdataRequest, checkDgStatus);
-                gp_road.submitJob({
-                    "user_point": params,
-                }, completeRoadDistRequest, checkRoadDistStatus);
-                gp_tweets.submitJob({
-                    "user_point": params,
-                }, completeTweetsRequest, checkTweetsStatus);
-
-            });
+            params.features[0].geometry.x = lon;
+            params.features[0].geometry.y = lat;
 
             $('#predict-box').modal();
     }
 
-    function completeDgdataRequest(jobInfo){
-        //console.log("getting data");
-        gp_dg.getResultData(jobInfo.jobId, "demographic_result_shp", displayDgResult);
-    }
-
-    function displayDgResult(result, messages) {
-        console.log(result);
+    /* 1. Handling getting demographic data */
+    function displayDgResult(result) {
+        //console.log(result);
         $('#loading-asiapop').hide();
         $('#loading-avghh').hide();
         $('#asiapop-text').show();
         $('#avghh-text').show();
 
-        // var asiapopu = result.value.features[0].attributes["AsianPopNu"];
-        // var avghhold = result.value.features[0].attributes["AvgHouseHo"];
-        //
-        // //display numbers
-        // $('#asiapop-text').text(asiapopu + " asian in the census tract");
-        // $('#avghh-text').text("$"+ avghhold + " within the census tract");
+        var result_json = JSON.parse(result);
+        var asiapopu = result_json.results[0].value.features[0].attributes["AsianPopNu"];
+        var avghhold = result_json.results[0].value.features[0].attributes["AvgHouseHo"];
 
-        predictFactorReady+=1;
-        if(predictFactorReady == 3){
-            displayFinalPredict();
-        }
+         //display numbers
+         $('#asiapop-text').text(asiapopu + " asian in the census tract");
+         $('#avghh-text').text("$"+ numberWithCommas(avghhold) + " within the census tract");
+         //assign to globe vars
+        thislocation_asiaPop = asiapopu;
+        thislocation_avgIncome = avghhold;
+        displayFinalPredict();
 
-        tempvar1 = result;
-    }
-
-    function checkDgStatus(jobInfo) {
-       // console.log(jobInfo);
     }
 
     /* 2. Handling getting nearest road */
-
-    function completeRoadDistRequest(jobInfo){
-
-        gp_road.getResultData(jobInfo.jobId, "PointDist", displayRoadDistResult);
-    }
-
-    function displayRoadDistResult(result, messages) {
-        console.log(result);
+    function displayRoadDistResult(result) {
+        //console.log(result);
         $('#loading-distroad').hide();
         $('#distroad-text').show();
-        predictFactorReady+=1;
-        if(predictFactorReady == 3){
-            displayFinalPredict();
-        }
-        tempvar2 = result;
-    }
+        var result_json = JSON.parse(result);
+        var roaddist = result_json.results[0].value.features[0].attributes["NEAR_DIST"];
+        roaddist = roaddist * 100000; //convert to meters
+        //display on the form
+        $('#distroad-text').text(roaddist.toFixed(3) + " meters to nearest road");
+        //assign to globe var
+        thislocation_nearRd = roaddist;
 
-    function checkRoadDistStatus(jobInfo){
-        //console.log(jobInfo);
+        displayFinalPredict();
+
     }
 
     /* 3. Find tweets */
-    function completeTweetsRequest(jobInfo){
-        gp_tweets.getResultData(jobInfo.jobId, "user_point_SpatialJoin_shp", displayTweetsResult);
-    }
-
-    function displayTweetsResult(result, messages) {
-        console.log(result);
+    function displayTweetsResult(result) {
+        //console.log(result);
         $('#loading-numtweets').hide();
         $('#numtweets-text').show();
-        predictFactorReady+=1;
-        if(predictFactorReady == 3){
-            displayFinalPredict();
-        }
-        tempvar3 = result;
-    }
+        var result_json = JSON.parse(result);
+        var tweetcount = result_json.results[0].value.features[0].attributes["Join_Count"];
+        //display on the form
+        $('#numtweets-text').text(tweetcount + " tweets in 100 meter buffer");
+        //assign to globe var
+        thislocation_tweetsCt = tweetcount;
 
-    function checkTweetsStatus(jobInfo){
-        //console.log(jobInfo);
+        displayFinalPredict();
+
     }
 
     //display final algorithm prediction
     function displayFinalPredict() {
-        $('#loading-salevol').hide();
-        $('#pred-salesvol').show();
+
+        predictFactorReady+=1;
+        if(predictFactorReady == 3){
+            $('#loading-salevol').hide();
+            $('#pred-salesvol').show();
+            var location_code = $("#loc-select").val();
+            var salesvol = predictAlgo(location_code, thislocation_nearRd, thislocation_avgIncome, thislocation_tweetsCt, thislocation_asiaPop);
+            $('#pred-salesvol').text('$ '+numberWithCommas(salesvol.toFixed(0)));
+            cleanGlobeVars();
+        }
+
     }
     
     
@@ -311,6 +287,33 @@ require([
         return map.toMap(screenPoint);
     }
 
+    //This function helps to generate the get url for Demographic data
+    function buildDGUrl (lon, lat){
+        var purl = "?user_point=%7B%0D%0A+%22features%22%3A+%5B%7B%0D%0A++%22geometry%22%3A+%7B%0D%0A+++%22x%22%3A+"+lon.toString()+"%2C%0D%0A+++%22y%22%3A+"+lat.toString()+"%0D%0A++%7D%0D%0A+%7D%5D%0D%0A%7D&env%3AoutSR=&env%3AprocessSR=&returnZ=false&returnM=false&returnTrueCurves=false&f=json";
+        return url_dg + purl;
+    }
+
+    //This function helps to generate the get url for near tweets data
+    function buildTweetsUrl (lon, lat){
+        var purl = "?user_point=%7B%0D%0A+features%3A+%5B%7B%0D%0A++geometry%3A+%7B%0D%0A+++x%3A+"+lon.toString()+"%2C%0D%0A+++y%3A+"+lat.toString()+"%0D%0A++%7D%0D%0A+%7D%5D%0D%0A%7D&env%3AoutSR=&env%3AprocessSR=&returnZ=false&returnM=false&returnTrueCurves=false&f=json";
+        return url_tweets + purl;
+    }
+
+    //This function helps to generate the get url for near road data
+    function buildNearRDUrl(lon, lat) {
+        var purl = "?user_point=%7B%0D%0A+features%3A+%5B%7B%0D%0A++geometry%3A+%7B%0D%0A+++x%3A+"+lon.toString()+"%2C%0D%0A+++y%3A+"+lat.toString()+"%0D%0A++%7D%0D%0A+%7D%5D%0D%0A%7D&env%3AoutSR=&env%3AprocessSR=&returnZ=false&returnM=false&returnTrueCurves=false&f=json";
+        return url_nearRoad + purl;
+    }
+
+    //clean the vars
+    function cleanGlobeVars() {
+        predictFactorReady = 0;
+        thislocation_nearRd = 0;
+        thislocation_asiaPop = 0;
+        thislocation_avgIncome = 0;
+        thislocation_tweetsCt = 0;
+    }
+
 });
 
 // Algorithm function
@@ -326,4 +329,8 @@ function predictAlgo(locationCode, nearRoaddist, avgHouseIncome, numOfTweet, asi
     finalpredict = const1 + const2 * locationCode - const3 * nearRoaddist + const4 * avgHouseIncome + const5 * Math.log10(numOfTweet) + const6 * asianPop;
     return finalpredict;
 
+}
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
