@@ -7,6 +7,7 @@
     <link href="https://js.arcgis.com/3.21/dijit/themes/claro/claro.css" rel="stylesheet">
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/styles.css" rel="stylesheet">
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon" />
     <script src="scripts/jquery-3.2.1.min.js">
     </script>
     <script src="scripts/popper.min.js">
@@ -113,18 +114,34 @@
             <div class="modal-body">
                 <table class='table table-striped'>
                     <tr>
-                        <td class='text-center' colspan='2'><img alt='starbucks' src='img/starbucks-256-long.png' style='width: 240px;'></td>
+                        <td class='text-center' colspan='2'><img alt='starbucks' src='img/demographic-256-long.png' style='width: 100px;'></td>
                     </tr>
                     <tr>
-                        <td class='text-center boldText' colspan='2'><span id="model-lat">Latitude:</span>, <span id="model-lon">Longitude</span></td>
+                        <td class='text-center boldText' colspan='2'><span id="model-dg-lat">Latitude:</span>, <span id="model-dg-lon">Longitude</span></td>
                     </tr>
                     <tr>
-                        <td>Location Sqt:</td>
-                        <td></td>
+                        <td>College or University Graduates % </td>
+                        <td>%<span id="dg-collgeoru"></span></td>
                     </tr>
                     <tr>
-                        <td>Distance to Road:</td>
-                        <td></td>
+                        <td>Asian Population #:</td>
+                        <td><span id="dg-asianPopNum"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Asian Population %:</td>
+                        <td>%<span id="dg-asianPopPc"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Avg Household Income:</td>
+                        <td>$<span id="dg-avgHouseHo"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Median Household Income:</td>
+                        <td>$<span id="dg-medianHous"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Old House %:</td>
+                        <td>%<span id="dg-oldHousePc"></span></td>
                     </tr>
                 </table>
             </div>

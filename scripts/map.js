@@ -15,10 +15,11 @@ require([
     "esri/dijit/HomeButton",
     "esri/layers/FeatureLayer",
     "esri/renderers/SimpleRenderer",
+    "esri/symbols/PictureMarkerSymbol",
     "esri/symbols/SimpleMarkerSymbol",
     "esri/Color",
     "dojo/domReady!"
-], function(number, InfoTemplate, Map, HomeButton, FeatureLayer, SimpleRenderer, SimpleMarkerSymbol, Color) {
+], function(number, InfoTemplate, Map, HomeButton, FeatureLayer, SimpleRenderer, PictureMarkerSymbol, SimpleMarkerSymbol, Color) {
     // Code to create the map and view will go here
     var map = new Map("viewDiv", {
         basemap: "topo",
@@ -31,15 +32,17 @@ require([
     var home = new HomeButton({
         map: map
     }, "HomeButton");
-    home.startup();
+    //home.startup();
 
     var rTemplate = new InfoTemplate("Starbucks Location", infoTemplateContent);
 
-    var defaultSymbol = new SimpleMarkerSymbol(
-        SimpleMarkerSymbol.STYLE_CIRCLE, 10,
-        null,
-        new Color([82,158,64])
-    );
+    var defaultSymbol = new PictureMarkerSymbol('img/starbucks-icon.png', 22, 22);
+
+    // var defaultSymbol = new SimpleMarkerSymbol(
+    //     SimpleMarkerSymbol.STYLE_CIRCLE, 10,
+    //     null,
+    //     new Color([82,158,64])
+    // );
 
     var featureLayer = new FeatureLayer(dataURL_res,{
         infoTemplate:rTemplate,
@@ -59,10 +62,7 @@ require([
         return number.format(value, {places: 2, locale: "en-us"});
     };
 
-    //debug
-    map.on("click", function (e) {
-        console.log(e.mapPoint);
-    });
+
 
 });
 

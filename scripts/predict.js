@@ -14,28 +14,40 @@ var thislocation_lon=0;
 var thislocation_lat=0;
 var location_dict = {};
 
+var infoTemplateContent = "<table class='table table-striped'>" +
+    "<tr><td colspan='2' class='text-center'><img alt='starbucks' src='img/starbucks-256-long.png' style='width: 240px;' /></td></tr>" +
+    "<tr><td colspan='2' class='text-center boldText'><span>${Address},${City},${State}&nbsp;${ZIP_Code}</span></td></tr>" +
+    "<tr><td>Annual Sales:</td><td><span>&#36;${Location_2:formatContent}</span></td></tr>" +
+    "<tr><td>Location Sqt:</td><td><span>${Square_Foo}&nbsp;sqft</span></td></tr>" +
+    "<tr><td>Distance to Road:</td><td><span>${Distance:formatContent2Decimal}&nbsp;meters</span></td></tr>" +
+    "<tr><td>Asian Population:</td><td><span>${ASIAN_CY:formatContent}</span></td></tr></table>";
+
 //for debug
 var tempvar1, tempvar2, tempvar3;
 
 
 require([
-    "esri/map","esri/tasks/Geoprocessor", "esri/geometry/Point", "esri/geometry/Polygon",
+    "esri/map", "esri/geometry/Point", "esri/geometry/Polygon",
     "esri/toolbars/draw", "esri/toolbars/edit",
     "esri/symbols/SimpleMarkerSymbol", "esri/symbols/SimpleLineSymbol",
     "esri/symbols/SimpleFillSymbol",
     "esri/graphic", "esri/geometry/jsonUtils",
     "esri/Color", "dojo/parser",
-    "dijit/Menu", "dijit/MenuItem", "dijit/MenuSeparator",
-    "dijit/form/Button", "dijit/layout/BorderContainer", "dijit/layout/ContentPane",
+    "dijit/Menu", "dijit/MenuItem",
+    "dojo/number","esri/InfoTemplate",
+    "esri/layers/FeatureLayer","esri/renderers/SimpleRenderer","esri/symbols/PictureMarkerSymbol",
     "dojo/domReady!"
 ], function(
-    Map, Geoprocessor, Point, Polygon,
+    Map, Point, Polygon,
     Draw, Edit,
     SimpleMarkerSymbol, SimpleLineSymbol,
     SimpleFillSymbol,
     Graphic, geometryJsonUtils,
     Color, parser,
-    Menu, MenuItem, MenuSeparator) {
+    Menu, MenuItem,
+    number, InfoTemplate,
+    FeatureLayer, SimpleRenderer, PictureMarkerSymbol) {
+
     parser.parse();
 
     var map = new Map("viewDiv", {
@@ -46,11 +58,29 @@ require([
         maxZoom: 17
     });
 
+    var dataURL_res = "https://services.arcgis.com/q3Zg9ERurv23iysr/arcgis/rest/services/Starbucks_Location/FeatureServer/0";
+
     var url_dg = "http://134.173.236.10:6080/arcgis/rest/services/starbucksmart/FindDGUnder/GPServer/FindDemographicUnder/execute";
     var url_tweets = "http://134.173.236.10:6080/arcgis/rest/services/starbucksmart/FindNearTweets/GPServer/FindNearTweets/execute";
     var url_nearRoad = "http://134.173.236.10:6080/arcgis/rest/services/starbucksmart/FindNearRoad/GPServer/FindNearRoad/execute"
 
     map.on("load", createToolbarAndContextMenu);
+
+    map.infoWindow.resize(320, 600);
+
+    var rTemplate = new InfoTemplate("Starbucks Location", infoTemplateContent);
+    var defaultSymbol = new PictureMarkerSymbol('img/starbucks-icon.png', 22, 22);
+
+    var featureLayer = new FeatureLayer(dataURL_res,{
+        infoTemplate:rTemplate,
+        outFields: ["*"]
+    });
+
+    var renderer = new SimpleRenderer(defaultSymbol);
+    featureLayer.setRenderer(renderer);
+    map.addLayer(featureLayer);
+
+
 
     function createToolbarAndContextMenu() {
 
@@ -180,6 +210,18 @@ require([
             thislocation_lon = lon;
             thislocation_lat = lat;
 
+            var key = thislocation_lon.toString() + "#" +thislocation_lat.toString();
+            if(location_dict[key]!=null){
+                //pre fill the box
+                var loc_data = location_dict[key];
+                $('#asiapop-text').text(loc_data.asian_pop + " asian in the census tract");
+                $('#avghh-text').text("$ "+ loc_data.avg_income +" within the census tract");
+                $('#distroad-text').text(loc_data.road_dist.toFixed(3) + " meters to nearest road");
+                $('#numtweets-text').text(loc_data.tweets_ct + " tweets in 100 meter buffer");
+                $('#pred-salesvol').text('$ '+numberWithCommas(loc_data.sales_predict.toFixed(0)));
+                $("#loc-select").val(loc_data.location_code);
+            }
+
             $('#predict-box').modal();
 
     }
@@ -189,14 +231,35 @@ require([
         var lat = selected.geometry.getLatitude().toFixed(5);
         var lon =selected.geometry.getLongitude().toFixed(5);
 
-        $('#model-lat').text("Latitude:"+ lat);
-        $('#model-lon').text("Longitude:"+ lon);
+        $('#model-dg-lat').text("Latitude:"+ lat);
+        $('#model-dg-lon').text("Longitude:"+ lon);
+        resetDGUI();
 
         thislocation_lon = lon;
         thislocation_lat = lat;
-
+        var dgurl = buildDGUrl(thislocation_lon, thislocation_lat);
+        $.get( dgurl, null).done(displayDgResultAll);
         $('#demographic-box').modal();
     }
+
+    function displayDgResultAll(result) {
+        var result_json = JSON.parse(result);
+
+        var asiapopu = result_json.results[0].value.features[0].attributes["AsianPopNu"];
+        var avghhold = result_json.results[0].value.features[0].attributes["AvgHouseHo"];
+        var collegeOrU = result_json.results[0].value.features[0].attributes["CollegeOrU"];
+        var asianPopPc = result_json.results[0].value.features[0].attributes["AsianPopPc"];
+        var oldHousePc = result_json.results[0].value.features[0].attributes["OldHousePc"];
+        var medianHous = result_json.results[0].value.features[0].attributes["MedianHous"];
+
+        $('#dg-collgeoru').text(collegeOrU.toFixed(3));
+        $('#dg-asianPopNum').text(numberWithCommas(asiapopu));
+        $('#dg-asianPopPc').text(asianPopPc.toFixed(3));
+        $('#dg-avgHouseHo').text(numberWithCommas(avghhold));
+        $('#dg-medianHous').text(numberWithCommas(medianHous));
+        $('#dg-oldHousePc').text(oldHousePc.toFixed(3));
+    }
+
 
     /* 1. Handling getting demographic data */
     function displayDgResult(result) {
@@ -207,6 +270,7 @@ require([
         $('#avghh-text').show();
 
         var result_json = JSON.parse(result);
+
         var asiapopu = result_json.results[0].value.features[0].attributes["AsianPopNu"];
         var avghhold = result_json.results[0].value.features[0].attributes["AvgHouseHo"];
 
@@ -273,10 +337,8 @@ require([
                 asian_pop:thislocation_asiaPop,
                 sales_predict:salesvol
             };
-            var key = thislocation_lon.toString() + thislocation_lat.toString();
-            if(location_dict[key]==null){
-                location_dict[key] = thislocation;
-            }
+            var key = thislocation_lon.toString() + "#" +thislocation_lat.toString();
+            location_dict[key] = thislocation;
 
             cleanGlobeVars();
         }
@@ -337,6 +399,15 @@ require([
         $('#distroad-text').text("?? meters to nearest road");
         $('#numtweets-text').text("?? tweets in 100 meter buffer");
         $('#pred-salesvol').text('$ ??????');
+    }
+    
+    function resetDGUI() {
+        $('#dg-collgeoru').text('');
+        $('#dg-asianPopNum').text('');
+        $('#dg-asianPopPc').text('');
+        $('#dg-avgHouseHo').text('');
+        $('#dg-medianHous').text('');
+        $('#dg-oldHousePc').text('');
     }
 
 });
