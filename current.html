@@ -44,29 +44,51 @@
 <div id="accordion" role="tablist" aria-multiselectable="true" class="tool-bar">
     <div class="card">
         <div class="card-header" role="tab" id="headingOne">
+            <a class="card-link" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">Basemap</a>
             <a class="card-link" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Filters</a>
-            <a class="card-link" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseOne">Layers</a>
-            <a class="card-link" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseOne">Setup</a>
+            <a class="card-link" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">Layers</a>
         </div>
 
         <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
             <div class="container-fluid filter-container">
                 <div class="row">
                     <div class="form-group col-2">
-                        <label class="text-bold control-label" for="searchRadius100"><span>Sales Volume</span></label>
-                        <select class="form-control" name="searchRadius" data-qaid="selectFilter-searchRadius" id="searchRadius100">
-                            <option value="5" data-reactid="152">Greater than $2,000,000 </option>
-                            <option value="4" data-reactid="153">$1,200,000 - $2,000,000</option>
-                            <option value="3" data-reactid="154">$700,000 - $1,200,000</option>
-                            <option value="2" data-reactid="154">$200,000 - $700,000</option>
-                            <option value="1" data-reactid="154">Less than $200,000</option>
+                        <label class="text-bold control-label" for="salesvolsel"><span>Sales Volume</span></label>
+                        <select class="form-control" id="salesvolsel">
+                            <option value="v5">Greater than $2,000,000 </option>
+                            <option value="v4">$1,200,000 - $2,000,000</option>
+                            <option value="v3">$700,000 - $1,200,000</option>
+                            <option value="v2">$200,000 - $700,000</option>
+                            <option value="v1">Less than $200,000</option>
+                            <option value="v0" selected>Show all</option>
                         </select></div>
 
                     <div class="form-group col-2">
-                        <label class="text-bold control-label" for="startYear1981"><span>Location Size</span></label>
-                        <select class="form-control" name="startYear" data-qaid="selectFilter-startYear" id="startYear1981">
-                            <option value="1981" data-reactid="170">Greater than 2,499 sqft</option>
-                            <option value="1982" data-reactid="171">0 - 2,499 sqft</option>
+                        <label class="text-bold control-label" for="sizesel"><span>Location Size</span></label>
+                        <select class="form-control"  id="sizesel">
+                            <option value="s2">Greater than 2,499 sqft</option>
+                            <option value="s1">0 - 2,499 sqft</option>
+                            <option value="s0" selected>Show all</option>
+                        </select></div>
+
+                    <div class="form-group col-2">
+                        <label class="text-bold control-label" for="sizesel"><span>Number of Tweets in Area/Year</span></label>
+                        <select class="form-control"  id="tweetsel">
+                            <option value="t4">Over 1,4000</option>
+                            <option value="t3">4000 - 1,4000</option>
+                            <option value="t2">1000 - 4000</option>
+                            <option value="t1">0 - 1000</option>
+                            <option value="t0" selected>Show all</option>
+                        </select></div>
+
+                    <div class="form-group col-2">
+                        <label class="text-bold control-label" for="sizesel"><span># Asian Population in Area</span></label>
+                        <select class="form-control"  id="asianpopsel">
+                            <option value="a4">Over 10,000</option>
+                            <option value="a3">5,001 - 10,000</option>
+                            <option value="a2">2,501 - 5,000</option>
+                            <option value="a1">0 - 2,500</option>
+                            <option value="a0" selected>Show all</option>
                         </select></div>
                 </div>
             </div>
@@ -76,20 +98,29 @@
             <div class="container-fluid filter-container">
                 <div class="row">
                     <div class="form-group col-2">
-                        <label class="text-bold control-label" for="searchRadius1001"><span>Sales Volume</span></label>
-                        <select class="form-control" name="searchRadius" data-qaid="selectFilter-searchRadius" id="searchRadius1001">
-                            <option value="5" data-reactid="152">Greater than $2,000,000 </option>
-                            <option value="4" data-reactid="153">$1,200,000 - $2,000,000</option>
-                            <option value="3" data-reactid="154">$700,000 - $1,200,000</option>
-                            <option value="2" data-reactid="154">$200,000 - $700,000</option>
-                            <option value="1" data-reactid="154">Less than $200,000</option>
+                        <label class="text-bold control-label" for="basemapsel"><span>Change Basemap</span></label>
+                        <select class="form-control"  id="basemapsel">
+                            <option value="topo" selected>Topo</option>
+                            <option value="streets">Street</option>
+                            <option value="hybrid">Hybrid</option>
+                            <option value="gray">Gray</option>
+                            <option value="osm">Osm</option>
                         </select></div>
+                </div>
+            </div>
+        </div>
 
+        <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+            <div class="container-fluid filter-container">
+                <div class="row">
                     <div class="form-group col-2">
-                        <label class="text-bold control-label" for="startYear1981"><span>Location Size</span></label>
-                        <select class="form-control" name="startYear" data-qaid="selectFilter-startYear" id="startYear1981">
-                            <option value="1981" data-reactid="170">Greater than 2,499 sqft</option>
-                            <option value="1982" data-reactid="171">0 - 2,499 sqft</option>
+                        <label class="text-bold control-label" for="basemapsel"><span>Show Ethnicity Layer</span></label>
+                        <select class="form-control"  id="raceGroupsel">
+                            <option value="none">None</option>
+                            <option value="white">White</option>
+                            <option value="black">Black</option>
+                            <option value="asian">Asian</option>
+                            <option value="hispanic">Hispanic</option>
                         </select></div>
                 </div>
             </div>
@@ -102,6 +133,7 @@
 <div id="viewDiv">
     <div id="HomeButton"></div>
 </div>
+<div id="info"><div id="legend"></div></div>
 
 </body>
 </html>

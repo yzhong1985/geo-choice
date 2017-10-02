@@ -6,6 +6,10 @@ html, body {
     font-family: "Lucida Grande","Segoe UI",Arial,sans-serif;
 }
 
+.blog-post img, .blog-sidebar img{
+    margin: 20px 0;
+}
+
 .rounded-circle{
     margin-bottom: 20px;
 }
@@ -18,9 +22,9 @@ html, body {
 }
 
 .main-pic-bg{
-    background-color:rgba(255, 255, 255, 0.5);
+    background-color:rgba(255, 255, 255, 0.4);
     padding: 20px;
-    color: #2e3133;
+    color: #fff;
 }
 
 .filter-container{
