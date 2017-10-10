@@ -235,3 +235,9 @@ select{
     display: none;
 }
 
+.small-select{
+    width: 250px;
+    padding: 0 5px;
+    display: inline-block;
+    margin-bottom: 15px;
+}
